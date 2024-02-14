@@ -24,5 +24,8 @@
     "twilio": "^4.19.0",
     "validator": "^13.11.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "openapi-types": "^12.1.3"
+  }
 }

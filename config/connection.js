@@ -2,6 +2,7 @@ import { mongoose } from "mongoose";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import redis from "redis";
 
 dotenv.config();
 
@@ -19,6 +20,13 @@ export const connection = mongoose
   })
   .then((result) =>
     app.listen(PORT, function () {
+      const client = redis.createClient();
+      client.on("connect", function () {
+        console.log("Connected to Redis server");
+      });
+      client.on("error", function (error) {
+        console.error("Error connecting to Redis server:", error);
+      });
       console.log(`connection succesful ${PORT}`);
     })
   )

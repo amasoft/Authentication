@@ -49,8 +49,6 @@ import bcrypt from "bcrypt";
 // const maxAge = 3 * 24 * 60 * 60;
 export default class authentication {
   static async signup(req, res) {
-    console.log("welcom sir");
-
     const schema = Joi.object({
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
@@ -78,13 +76,6 @@ export default class authentication {
     const checkInputs = fieldsValidation(params);
     if (checkInputs)
       return res.status(409).json({ message: ` ${checkInputs} is required` });
-    // const { error, value } = schema.validate(req.body);
-    // if (error) {
-    //   console.log(9, JSON.stringify(error));
-    //   return res.status(400).json({ error: error.details[0].message });
-    // }
-
-    console.log("data", JSON.stringify(params));
     const verifycode = Math.floor(Math.random() * 90000) + 10000;
     const verifyLink = `localhost:3000/api/v1/verifyemail/${verifycode}`;
     params.code = verifycode;
@@ -94,7 +85,6 @@ export default class authentication {
         return res.status(409).json({
           message: "Registration not Succesfull!",
         });
-      // const sendCode = sendSMS(user.phoneNumber, verifycode);
       var message = `Dear ${user.firstName} ${user.lastName} welcome, klndly verify Your Account using this Passcode`;
       const sendCode = sendMail(verifyLink, user.email, message);
 
@@ -121,7 +111,6 @@ export default class authentication {
 
   static async verifyEmail(req, res) {
     const code = req.params.verifycode;
-    console.log(code);
     const checkCode = await User.findOne({
       code: code,
     });
@@ -137,8 +126,6 @@ export default class authentication {
         message: "Incorrct code!",
       });
     }
-    console.log("checkCode id", checkCode._id);
-
     User.updateOne(
       { code: code },
       { $set: { verified: true, code: "undefined" } }
@@ -171,7 +158,6 @@ export default class authentication {
   }
 
   static async forgotPassword(req, res) {
-    console.log("welcoime");
     //check if confirm and password are same
     const isPasswordsame = await User.hasPassword(
       req.body.password,

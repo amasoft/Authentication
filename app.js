@@ -4,12 +4,14 @@ import router from "./routes/usersRoutes.js";
 import { connection, app } from "./config/connection.js";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerui from "swagger-ui-express";
+// Create a Redis client
 //initialize middlewares
 // const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 const baseurl = "/api/v1/";
 app.use(baseurl, router);
+
 const option = {
   definition: {
     openapi: "3.0.0",
@@ -25,13 +27,6 @@ const option = {
       {
         url: "http://localhost:3000/",
         description: "Development server",
-      },
-      {
-        url: "http://facebook.com",
-        description: "Production server",
-      },
-      {
-        url: "https://twitter.com/",
       },
     ],
   },
